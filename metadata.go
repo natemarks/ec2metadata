@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	tokenUrl        = "http://169.254.169.254/latest/api/token"
-	metadataUrl     = "http://169.254.169.254/latest/meta-data/"
-	tokenTtlSeconds = "21600"
+	tokenURL        = "http://169.254.169.254/latest/api/token"
+	metadataURL     = "http://169.254.169.254/latest/meta-data/"
+	tokenTTLSeconds = "21600"
 )
 
 func getIMDSV2Token() (token string, err error) {
@@ -16,7 +16,7 @@ func getIMDSV2Token() (token string, err error) {
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("X-Aws-Ec2-Metadata-Token-Ttl-Seconds", tokenTtlSeconds)
+	req.Header.Set("X-Aws-Ec2-Metadata-Token-Ttl-Seconds", tokenTTLSeconds)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -38,7 +38,7 @@ func GetV2(path string) (value string, err error) {
 		panic(err)
 	}
 
-	req, err := http.NewRequest("GET", metadataUrl+path, nil)
+	req, err := http.NewRequest("GET", metadataURL+path, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -56,7 +56,7 @@ func GetV2(path string) (value string, err error) {
 
 // GetV1 use IMDSv1 to get EC2 instance metadata
 func GetV1(path string) (value string, err error) {
-	req, err := http.NewRequest("GET", metadataUrl+path, nil)
+	req, err := http.NewRequest("GET", metadataURL+path, nil)
 	if err != nil {
 		panic(err)
 	}
