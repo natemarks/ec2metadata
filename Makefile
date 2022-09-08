@@ -29,7 +29,7 @@ unittest: ## run test that don't require deployed resources
 deploymenttest: ##  run all tests
 	go test -v ./...
 
-static: write_commit lint ## run fmt, vet, goimports, gocyclo
+static: lint ## run fmt, vet, goimports, gocyclo
 	( \
 			 gofmt -w  -s .; \
 			 test -z "$$(go vet ./...)"; \
