@@ -1,4 +1,4 @@
-package puppers
+package ec2metadata
 
 import (
 	"io/ioutil"
@@ -12,7 +12,7 @@ const (
 )
 
 func getIMDSV2Token() (token string, err error) {
-	req, err := http.NewRequest("PUT", "http://169.254.169.254/latest/api/token", nil)
+	req, err := http.NewRequest("PUT", tokenURL, nil)
 	if err != nil {
 		return "", err
 	}
