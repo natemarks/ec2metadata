@@ -1,0 +1,16 @@
+build/
+release/
+upload/
+vendor/
+.idea/
+.vscode/
+*.test
+*.out
+*.iml
+.venv/
+*.tar.gz
+
+*.log
+
+version.txt
+*.zip
