@@ -1,8 +1,13 @@
 package ec2metadata
 
 import (
+	"context"
+	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
 )
 
 const (
@@ -69,4 +74,28 @@ func GetV1(path string) (value string, err error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	value = string(body)
 	return value, err
+}
+
+// GetAWSEc2Metadata get metadata using
+// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/ec2/imds#Client.GetMetadata
+func GetAWSEc2Metadata(path string) (value string, err error) {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		return "", err
+	}
+
+	client := imds.NewFromConfig(cfg)
+	output, err := client.GetMetadata(context.TODO(), &imds.GetMetadataInput{
+		Path: path,
+	})
+	if err != nil {
+		return "", err
+	}
+	defer output.Content.Close()
+	bytes, err := io.ReadAll(output.Content)
+	if err != nil {
+		return "", err
+	}
+	resp := string(bytes)
+	return resp, err
 }
